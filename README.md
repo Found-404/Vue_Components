@@ -1,24 +1,9 @@
 # hello-world
 
-## Project setup
-```
-yarn install
-```
+> 业务组件封装
 
-### Compiles and hot-reloads for development
-```
+启动
+
+```bash
 yarn serve
 ```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
