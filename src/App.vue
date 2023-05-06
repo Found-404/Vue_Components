@@ -2,20 +2,20 @@
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
   <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   <!-- <FormDemo /> -->
-  <EdeiTable />
+  <EdiTable />
 </template>
 
 <script>
 // import HelloWorld from "./components/HelloWorld.vue";
 // import FormDemo from "./components/FormDemo.vue";
-import EdeiTable from "./components/EdeitTable.vue";
+import EdiTable from "./components/EditTable.vue";
 
 export default {
   name: "App",
   components: {
     // HelloWorld,
     // FormDemo,
-    EdeiTable,
+    EdiTable,
   },
 };
 </script>
