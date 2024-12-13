@@ -7,6 +7,7 @@ import EditTable from "@/components/EditTable";
 import FormDemo from "@/components/FormDemo";
 import HelloWorld from "@/components/HelloWorld";
 import Antdx6 from "@/components/antdx6";
+import Drag from "@/components/Drag/Drag";
 
 // 3 创建路由对象
 const router = createRouter({
@@ -24,6 +25,7 @@ const router = createRouter({
     { path: "/editTable", component: EditTable },
     { path: "/formDemo", component: FormDemo },
     { path: "/x6", component: Antdx6 },
+    { path: "/drag", component: Drag },
   ],
 });
 

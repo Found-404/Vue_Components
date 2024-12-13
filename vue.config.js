@@ -16,4 +16,9 @@ module.exports = defineConfig({
       }),
     ],
   },
+  css: {
+    loaderOptions: {
+      less: {},
+    },
+  },
 });
