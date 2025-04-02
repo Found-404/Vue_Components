@@ -8,6 +8,7 @@ import FormDemo from "@/components/FormDemo";
 import HelloWorld from "@/components/HelloWorld";
 import Antdx6 from "@/components/antdx6";
 import Drag from "@/components/Drag/Drag";
+import Waterfall from "@/components/Waterfall/index.vue";
 
 // 3 创建路由对象
 const router = createRouter({
@@ -26,6 +27,7 @@ const router = createRouter({
     { path: "/formDemo", component: FormDemo },
     { path: "/x6", component: Antdx6 },
     { path: "/drag", component: Drag },
+    { path: "/vue3-waterfall", component: Waterfall },
   ],
 });
 

@@ -12,6 +12,7 @@ module.exports = defineConfig({
         resolvers: [ElementPlusResolver()],
       }),
       Components({
+        directoryAsNamespace: true, // 启用路径命名空间
         resolvers: [ElementPlusResolver()],
       }),
     ],
