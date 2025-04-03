@@ -1,42 +1,50 @@
 var horizontalLineProcessor = (() => {
   function calculate(vm, options, metas, rects) {
-    let width = vm.$el.clientWidth;
-    let total = metas.length;
-    let top = 0;
-    let offset = 0;
+    let width = vm.$el.clientWidth; // 容器宽度
+    let total = metas.length; // 总项目数
+    let top = 0; // 当前行顶部位置
+    let offset = 0; // 已处理项目偏移量
     while (offset < total) {
+      // 获取当前行的布局策略
       let strategy = getRowStrategy(width, options, metas, offset);
+      // 处理当前行每个项目
       for (let i = 0, left = 0, meta, rect; i < strategy.count; i++) {
         meta = metas[offset + i];
         rect = rects[offset + i];
+        // 计算项目位置和尺寸
         rect.top = top;
         rect.left = strategy.left + left;
-        rect.width = (meta.width * strategy.height) / meta.height;
+        rect.width = (meta.width * strategy.height) / meta.height; // 保持宽高比
         rect.height = strategy.height;
-        left += rect.width;
+        left += rect.width; // 累加宽度
       }
-      offset += strategy.count;
-      top += strategy.height;
+      offset += strategy.count; // 移动到下一行
+      top += strategy.height; // 累加高度
     }
-    vm.$el.style.height = top + "px";
+    vm.$el.style.height = top + "px"; // 设置容器总高度
   }
-
+  // 行策略计算
   function getRowStrategy(width, options, metas, offset) {
+    // 计算贪婪模式下的项目数
     let greedyCount = getGreedyCount(width, options.lineGap, metas, offset);
+    // 计算保守模式下的项目数（少一个）
     let lazyCount = Math.max(greedyCount - 1, 1);
+    // 计算两种模式的布局尺寸
     let greedySize = getContentSize(width, options, metas, offset, greedyCount);
     let lazySize = getContentSize(width, options, metas, offset, lazyCount);
+    // 选择最优布局方案
     let finalSize = chooseFinalSize(lazySize, greedySize, width);
     let height = finalSize.height;
     let fitContentWidth = finalSize.width;
+    // 处理单项目特殊情况
     if (finalSize.count === 1) {
       fitContentWidth = Math.min(options.singleMaxWidth, width);
       height = (metas[offset].height * fitContentWidth) / metas[offset].width;
     }
     return {
-      left: getLeft(width, fitContentWidth, options.align),
-      count: finalSize.count,
-      height: height,
+      left: getLeft(width, fitContentWidth, options.align), // 行起始位置
+      count: finalSize.count, // 项目数
+      height: height, // 行高度
     };
   }
 

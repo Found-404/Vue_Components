@@ -15,8 +15,10 @@
     "element-plus": "^2.3.4",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
-    "vue": "^3.2.13",
-    "vue-router": "^4.2.4"
+    "lodash": "^4.17.21",
+    "vue": "^3.5.13",
+    "vue-router": "^4.2.4",
+    "waterfall-v3": "^1.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -27,7 +29,8 @@
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "unplugin-auto-import": "^0.15.3",
-    "unplugin-vue-components": "^0.24.1"
+    "unplugin-vue-components": "^0.24.1",
+    "vite-plugin-css-injected-by-js": "^3.5.2"
   },
   "eslintConfig": {
     "root": true,

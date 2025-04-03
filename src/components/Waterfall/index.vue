@@ -1,17 +1,48 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { ItemFactory } from "./utils.js";
-import Waterfall from "./Waterfall.vue";
-import WaterfallSlot from "./WaterfallSlot.vue";
+import { Waterfall, WaterfallSlot } from "waterfall-v3";
 
 // mock数据
 const items = ref(ItemFactory.get(100));
+const line = ref(true);
+
+const switchDirection = () => {
+  items.value[0].width = 300;
+};
+
+function addItems() {
+  if (items.value.length < 500) {
+    items.value = [...items.value, ...ItemFactory.get(50)];
+  }
+}
+const handleScroll = () => {
+  // 滚动高度 + 可视高度 >= 文档总高度（阈值可微调）
+  const scrollTop =
+    document.documentElement.scrollTop || document.body.scrollTop;
+  const clientHeight = document.documentElement.clientHeight;
+  const scrollHeight = document.documentElement.scrollHeight;
+  const threshold = 50; // 距离底部阈值（像素）
+  if (scrollTop + clientHeight >= scrollHeight - threshold) {
+    // 触发加载更多等逻辑
+    addItems();
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 <template>
   <div class="waterfall_box">
+    <el-button type="primary" @click="switchDirection">切换方向</el-button>
     <Waterfall
-      line="h"
-      :line-gap="300"
+      :line="line ? 'h' : 'v'"
+      :line-gap="200"
       :min-line-gap="180"
       :max-line-gap="220"
       ref="waterfall"
@@ -58,7 +89,7 @@ const items = ref(ItemFactory.get(100));
   -ms-transform: translate(-50%, -50%);
 }
 .wf-transition {
-  transition: opacity 0.3s ease;
+  transition: opacity 1s ease;
   -webkit-transition: opacity 0.3s ease;
 }
 .wf-enter {

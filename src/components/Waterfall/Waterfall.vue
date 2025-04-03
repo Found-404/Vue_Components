@@ -1,5 +1,5 @@
 <template>
-  <div class="vue-waterfall" :style="style" ref="waterfallRef">
+  <div class="vue-waterfall" ref="waterfallRef">
     <slot></slot>
   </div>
 </template>
@@ -12,8 +12,11 @@ import {
   getCurrentInstance,
   onMounted,
   onBeforeUnmount,
+  onUnmounted,
+  provide,
 } from "vue";
 import { horizontalLineProcessor, verticalLineProcessor } from "./model.js";
+const MOVE_CLASS_PROP = "_wfMoveClass";
 const props = defineProps({
   autoResize: {
     type: Boolean,
@@ -59,7 +62,7 @@ const instance = getCurrentInstance();
 const virtualRects = ref([]);
 const token = ref();
 
-const MOVE_CLASS_PROP = "_wfMoveClass";
+provide("reflow", reflow);
 
 watch(
   [
@@ -94,7 +97,6 @@ watch(
  * - this     ==> instance.proxy
  * - this.$el ==> instance.proxy.$el
  */
-
 function reflow() {
   if (!instance.proxy.$el) {
     return;
@@ -115,7 +117,7 @@ function reflow() {
     }
     instance.proxy.$el.style.overflow = "hidden";
     render(virtualRects.value, metas);
-
+    flag = true;
     instance.proxy.$emit("reflowed", instance.proxy);
   }, 0);
 }
@@ -278,13 +280,27 @@ function off(elem, type, listener, useCapture = false) {
   elem.removeEventListener(type, listener, useCapture);
 }
 
+let flag = true;
 onMounted(() => {
-  // const slotNodes = slots.default()[0].children || [];
-  // console.log(slotNodes);
-  // const nodes = slotNodes.map((vnode) => vnode.component);
-  // console.log(nodes);
-
   watchAutoResize();
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (flag) {
+        flag = false;
+        reflow();
+      }
+    });
+  });
+  // 监听插槽容器的子节点变化
+  if (waterfallRef.value) {
+    observer.observe(waterfallRef.value, {
+      childList: true, // 监听子节点增删
+      subtree: false, // 监听所有后代节点
+      attributes: false, // 监听属性变化
+    });
+  }
+  // 组件卸载时断开监听
+  onUnmounted(() => observer.disconnect());
 });
 
 // 组件销毁
