@@ -8,7 +8,7 @@ const items = ref(ItemFactory.get(100));
 const line = ref(true);
 
 const switchDirection = () => {
-  items.value[0].width = 300;
+  line.value = !line.value;
 };
 
 function addItems() {
