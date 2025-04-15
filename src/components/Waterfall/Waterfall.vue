@@ -84,7 +84,7 @@ watch(
 );
 
 watch(
-  props.grow,
+  [() => props.grow],
   () => {
     reflowHandler();
   },
@@ -310,7 +310,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped>
+<style>
 .vue-waterfall {
   position: relative;
   /*overflow: hidden; cause clientWidth = 0 in IE if height not bigger than 0 */

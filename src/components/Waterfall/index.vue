@@ -1,14 +1,19 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { ItemFactory } from "./utils.js";
-import { Waterfall, WaterfallSlot } from "waterfall-v3";
+// import { Waterfall, WaterfallSlot } from "waterfall-v3";
+import { Waterfall, WaterfallSlot } from "./waterExport.js";
 
 // mock数据
 const items = ref(ItemFactory.get(100));
-const line = ref(true);
+const line = ref(false);
+const grow = ref([1, 2, 3]);
 
 const switchDirection = () => {
   line.value = !line.value;
+};
+const switchGrow = () => {
+  grow.value = [1, 2];
 };
 
 function addItems() {
@@ -40,12 +45,14 @@ onUnmounted(() => {
 <template>
   <div class="waterfall_box">
     <el-button type="primary" @click="switchDirection">切换方向</el-button>
+    <el-button type="primary" @click="switchGrow">切换列布局</el-button>
     <Waterfall
       :line="line ? 'h' : 'v'"
       :line-gap="200"
       :min-line-gap="180"
       :max-line-gap="220"
       ref="waterfall"
+      :grow="grow"
     >
       <WaterfallSlot
         v-for="(item, index) in items"
